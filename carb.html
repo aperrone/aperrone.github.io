@@ -1,0 +1,42 @@
+<html>
+
+<body>
+    <p>Fede</p>
+</body>
+<script>
+    console.log("ciaone");
+    
+    const userAction = async () => {
+        const response = await fetch('https://carburanti.mise.gov.it/ospzApi/search/zone', {
+            method: 'POST',
+            // mode: 'no-cors',
+            
+            headers: {
+                'ReferrerPolicy': 'strict-origin-when-cross-origin',
+                'Origin': 'https://carburanti.mise.gov.it',
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                'Accept': '*/*',
+                'Accept-Encoding': 'gzip, deflate, br'
+            },
+
+            body: '{ \
+                "points": [\
+                    {\
+                        "lat": 45.0956639,\
+                        "lng": 7.368353399999999\
+                    }\
+                ],\
+                "fuelType": "1-1",\
+                "priceOrder": "asc"\
+            }'
+        });
+        const myJson = await response.json();
+
+        console.log("ciaone2");
+        console.log(myJson);
+    }
+
+    userAction();
+</script>
+</html>
