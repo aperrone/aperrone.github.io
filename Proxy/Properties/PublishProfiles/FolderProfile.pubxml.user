@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Temp\Benzina\Proxy\bin\Release\net6.0\publish\</_PublishTargetUrl>
-    <History>True|2022-09-03T16:21:00.0046183Z;True|2022-09-03T18:20:45.2759038+02:00;True|2022-09-03T18:19:52.3733545+02:00;</History>
+    <History>True|2022-09-03T16:26:21.3251321Z;False|2022-09-03T18:26:05.5117465+02:00;True|2022-09-03T18:21:00.0046183+02:00;True|2022-09-03T18:20:45.2759038+02:00;True|2022-09-03T18:19:52.3733545+02:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>
