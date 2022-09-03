@@ -1,22 +1,113 @@
 <html>
 
+<head>
+    <style>
+        .nome { color: red; }
+        .brand { color: blue; }
+        th.brand { font-size: 25; background-color: aliceblue;  }
+    </style>
+</head>
+
 <body>
-    <p>Fede</p>
+    <H1>Benzina</H1>
+    <table id="tagBenzina">
+        <thead>
+            <th class="nome">Nome</th>
+            <th class="brand">Brand</th>
+            <th class="prezzo">Prezzo</th>
+        </thead>
+    </table>
+    <H1>Gasolio</H1>
+    <table id="tagGasolio">
+        <thead>
+            <th class="nome">Nome</th>
+            <th class="brand">Brand</th>
+            <th class="prezzo">Prezzo</th>
+        </thead>
+    </table>
 </body>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+
 <script>
+    $(document).ready(function () {
+
+        $.ajax({
+            type: 'POST',
+            url: 'https://localhost:5001/proxy/post?url=https://carburanti.mise.gov.it/ospzApi/search/zone',
+            data: JSON.stringify({
+                "points": [
+                    {
+                        "lat": 45.0956639,
+                        "lng": 7.368353399999999
+                    }
+                ],
+                "fuelType": "1-1",
+                "priceOrder": "asc"
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+        }).done(function (risultato) {
+            // console.log("success!!!!" + JSON.stringify(risultato));
+
+            var elencoBenzina = [];
+            var elencoGasolio = [];
+
+            risultato.results.forEach(puntoVendita => {
+                puntoVendita.fuels.forEach(tipoCarburante => {
+                    if (tipoCarburante.fuelId == 1) {
+                        elencoBenzina.push({ name: puntoVendita.name, price: tipoCarburante.price, brand: puntoVendita.brand });
+                    }
+                    else if (tipoCarburante.fuelId == 2) {
+                        elencoGasolio.push({ name: puntoVendita.name, price: tipoCarburante.price, brand: puntoVendita.brand });
+                    }
+
+                });
+            });
+
+            function compare(a, b) {
+                if (a.price < b.price) {
+                    return -1;
+                }
+                if (a.price > b.price) {
+                    return 1;
+                }
+                return 0;
+            }
+
+            var elencoBenzinaOrdinatoRidotto = elencoBenzina.sort(compare).slice(0,3);
+            var elencoGasolioOrdinatoRidotto = elencoGasolio.sort(compare).slice(0,3);
+
+            elencoBenzinaOrdinatoRidotto.forEach(riga => {
+                $('#tagBenzina').append('<tr><td class="nome">' + riga.name + '</td><td class="brand">' + riga.brand + '</td><td class="prezzo">' + riga.price + '</td></tr>');
+            })
+
+            elencoGasolioOrdinatoRidotto.forEach(riga => {
+                $('#tagGasolio').append('<tr><td class="nome">' + riga.name + '</td><td class="brand">' + riga.brand + '</td><td class="prezzo">' + riga.price + '</td></tr>');
+            })
+        }).fail(function () {
+            console.log("errore!!!!");
+        });
+
+    });
+</script>
+
+<script>
+    /*
     console.log("ciaone");
+
+    
     
     const userAction = async () => {
         const response = await fetch('https://carburanti.mise.gov.it/ospzApi/search/zone', {
             method: 'POST',
-            // mode: 'no-cors',
+            mode: 'same-origin',
             
             headers: {
                 //'ReferrerPolicy': 'strict-origin-when-cross-origin',
                 //'Origin': 'https://carburanti.mise.gov.it',
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
-                'Accept': '*/*',
                 'Accept-Encoding': 'gzip, deflate, br'
             },
 
@@ -38,5 +129,7 @@
     }
 
     userAction();
+    */
 </script>
+
 </html>
